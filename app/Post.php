@@ -15,6 +15,7 @@ class Post extends Model
         'title',
         'content',
         'slug',
+        'user_id'
     ];
     static public function generateSlug($str) {
         $originalSlug = Str::of($str)->slug('-')->__toString();
@@ -25,6 +26,10 @@ class Post extends Model
             $i++;
         }
         return $slug;
+    }
+
+    public function user() {
+        return $this->belongsTo('App\User');
     }
 
 }

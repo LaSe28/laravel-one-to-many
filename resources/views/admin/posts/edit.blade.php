@@ -15,7 +15,7 @@
         </div>
         <div class="input-group mt-5">
             <label for="content" class="input-group-text">Contenuto del Post</label>
-            <textarea id="content" name="content" class="form-control" aria-label="With textarea"></textarea>
+            <textarea id="content" name="content" class="form-control" aria-label="With textarea">{{$post->content}}</textarea>
         </div>
         <button class="btn btn-primary mt-3" type="submit">Aggiorna</button>
     </form>
