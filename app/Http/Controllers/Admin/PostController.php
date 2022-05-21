@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+
+    public function myindex()
+    {
+        $posts = Post::where('user_id', Auth::user()->id)->paginate(8);
+        return view('admin.posts.index', compact('posts'));
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +22,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(7);
+        $posts = Post::paginate(8);
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -37,7 +44,9 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $submitted = $request->all();
+        $submitted = $request->all() + [
+            'user_id' => Auth::user()->id
+        ];
         $newPost = Post::create($submitted);
         return redirect()->route('admin.posts.show', $newPost->slug);
     }
@@ -50,8 +59,10 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $posts = Post::where('user_id', $post->user->id)->get();
         return view('admin.posts.show', ['title' => $post->title,
-                                        'post'     => $post]);
+                                        'post'     => $post,
+                                        'posts' => $posts]);
     }
 
     /**

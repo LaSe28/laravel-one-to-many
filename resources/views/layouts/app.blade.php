@@ -79,7 +79,8 @@
 
         <main class="py-4">
             <div class="container">
-                <a href="{{route('admin.posts.index')}}">Vai ai post</a>
+                <a class="btn btn-primary" href="{{route('admin.posts.index')}}">Tutti i post</a>
+                <a class="btn btn-primary" href="{{route('admin.posts.myindex')}}">I miei post</a>
             </div>
             @yield('content')
 

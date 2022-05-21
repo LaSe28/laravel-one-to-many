@@ -10,5 +10,9 @@
 </head>
 <body>
     @yield('content')
+    <div id="popup" class="popup hidden">
+        <div class="message">
+        </div>
+    </div>
 </body>
 </html>
