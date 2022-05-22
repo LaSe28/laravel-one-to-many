@@ -5,10 +5,25 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Post;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+
+
+    private function validator($model) {
+        return [
+            // 'user_id'   => 'required|exists:App\User,id',
+            'title'     => 'required|max:100',
+            'slug'      => [
+                'required',
+                Rule::unique('posts')->ignore($model),
+                'max:100'
+            ],
+            'content'   => 'required'
+        ];
+    }
 
     public function myindex()
     {
@@ -44,6 +59,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate($this->validator(null));
         $submitted = $request->all() + [
             'user_id' => Auth::user()->id
         ];
@@ -85,6 +101,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        $request->validate($this->validator($post));
         $submitted = $request->all();
         $post->update($submitted);
         return redirect()->route('admin.posts.show', $post->slug);

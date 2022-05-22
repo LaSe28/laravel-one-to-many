@@ -6,3 +6,20 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+
+#popup{
+    height: 100vh;
+    width: 100%;
+    background-color: rgba($color: #000000, $alpha: .5);
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    .message{
+        background-color: white;
+        border-radius: 1rem;
+        width: 300px;
+    }
+}
