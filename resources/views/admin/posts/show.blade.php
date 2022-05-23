@@ -20,7 +20,7 @@
             <div class="card mx-4 my-5" style="width: 15rem;">
                 <div class="card-title">{{$post->title}}</div>
                 <div class="card-text my-3">Aggiunto il: {{date('d-m-Y', strtotime($post->created_at))}}</div>
-                <td><a href="{{route('admin.posts.show', $post->slug)}}" class="me-1 btn btn-primary">Apri</a></td>
+                <a href="{{route('admin.posts.show', $post->slug)}}" class="col-3 align-self-end btn btn-primary">Apri</a>
             </div>
             @endif
             @endforeach

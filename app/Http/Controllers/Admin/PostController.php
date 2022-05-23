@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $posts = Post::paginate(8);
         return view('admin.posts.index', compact('posts'));
