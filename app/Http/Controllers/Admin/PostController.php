@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Category;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Post;
@@ -26,10 +27,17 @@ class PostController extends Controller
         ];
     }
 
-    public function myindex()
+    public function myindex(Request $request)
     {
+        $categories = Category::all();
+        $users = User::all();
         $posts = Post::where('user_id', Auth::user()->id)->paginate(8);
-        return view('admin.posts.index', compact('posts'));
+        return view('admin.posts.index', [
+            'request' => $request,
+            'posts' => $posts,
+            'users' => $users,
+            'categories' => $categories
+        ]);
     }
     /**
      * Display a listing of the resource.
@@ -38,8 +46,28 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::paginate(8);
-        return view('admin.posts.index', compact('posts'));
+        $posts = Post::where('id', '>', 0);
+
+        if($request->search) {
+            $posts->where('title', 'LIKE', "%$request->search%");
+        }
+        if ($request->category) {
+            $posts->where('category_id', $request->category);
+        }
+        if ($request->user) {
+            $posts->where('user_id', $request->user);
+        }
+
+        $categories = Category::all();
+        $users = User::all();
+
+        $posts = $posts->paginate(20);
+        return view('admin.posts.index', [
+            'request' => $request,
+            'posts' => $posts,
+            'users' => $users,
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -76,10 +104,12 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $posts = Post::where('user_id', $post->user->id)->get();
+        $categoryPosts = Post::where('category_id', $post->category->id)->get();
+        $userPosts = Post::where('user_id', $post->user->id)->get();
         return view('admin.posts.show', ['title' => $post->title,
                                         'post'     => $post,
-                                        'posts' => $posts]);
+                                        'categoryPosts' => $categoryPosts,
+                                        'userPosts' => $userPosts]);
     }
 
     /**
